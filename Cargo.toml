@@ -1,0 +1,27 @@
+[package]
+name = "yew-digit-code"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+
+[dependencies]
+yew = { version = "0.21.0" }
+web-sys = { version = "0.3.68", features = ["Window"] }
+wasm-bindgen-futures = "0.4.42"
+wasm-bindgen = "0.2.91"
+
+log = { version = "0.4.21", optional = true }
+rand = { version = "0.8", optional = true }
+unicode-segmentation = { version = "1.11.0", optional = true }
+itertools = { version = "0.13", optional = true }
+serde = { version = "1", optional = true }
+
+[features]
+default = ["default-id", "unicode-segmentation"]
+log = ["dep:log"]
+default-id = ["dep:rand"]
+unicode-segmentation = ["dep:unicode-segmentation"]
+itertools = ["dep:itertools"]
+serde = ["dep:serde"]
