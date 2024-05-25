@@ -104,7 +104,7 @@ pub fn code_digit_element<PROFILE: DigitCodeProfile + 'static>(
     };
 
     let id = id.to_string();
-    let id = if id.starts_with(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) {
+    let id = if !id.starts_with(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) {
         id
     } else {
         #[cfg(feature = "log")]

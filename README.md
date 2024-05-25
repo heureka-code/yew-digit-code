@@ -1,6 +1,8 @@
 This crate provides a `yew` component for digit based codes like TOTP where the user gets
 a nice looking collection of LEN edits with length one to enter a code with a fixed alphabet.
 
+Documentation: https://heureka-code.github.io/yew-digit-code/
+
 This crate uses the `unicode-segmentation` crate as a dependency (behind a feature flag).
 The signatures of this crate's methods depend highly on this flag so be aware of that.
 `unicode-segmentation` is needed if your alphabet contains characters that can't be represented in a single rust char.
