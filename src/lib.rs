@@ -7,7 +7,7 @@
 //! If your codes only use ASCII you can disable this feature.
 //!
 //! # Features
-//! - `log`: adds few log messages using `log` crate
+//! - `log` _(default)_: adds few log messages using `log` crate
 //! - `default-id` _(default)_: generates a random id (`rand` crate) where a unique html id is needed. When disabled the user has to choose one.
 //! - `unicode-segmentation`: needed for unicode alphabets (changes method signatures)
 //! - `itertools`: no interface changes. Some implementations differ (joining strings and chars). Itertools is more efficient for sure
