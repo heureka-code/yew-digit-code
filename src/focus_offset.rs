@@ -52,7 +52,7 @@ pub fn focus_offset(
         let index = offset.process(i, element_count - 1);
 
         #[cfg(feature = "log")]
-        log::debug!("Focus offset is called: {offset:?}, index={i} total={element_count}");
+        log::trace!("Focus offset is called: {offset:?}, index={i} total={element_count}");
 
         let index = match index {
             FocusResult::Ok(index) => index,
