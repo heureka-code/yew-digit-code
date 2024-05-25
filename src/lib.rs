@@ -39,6 +39,7 @@ pub use profile::DigitCodeProfile;
 ///
 /// ```
 /// use yew::prelude::*;
+/// use yew_digit_code::TotpInput;
 ///
 /// #[function_component(CodeComponent)]
 /// fn code_component() -> Html {
@@ -53,6 +54,7 @@ pub use profile::DigitCodeProfile;
 /// With explicit length
 /// ```
 /// use yew::prelude::*;
+/// use yew_digit_code::TotpInput;
 ///
 /// #[function_component(CodeComponentWel)]
 /// fn code_component_wel() -> Html {

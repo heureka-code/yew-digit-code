@@ -19,7 +19,7 @@ itertools = { version = "0.13", optional = true }
 serde = { version = "1", optional = true }
 
 [features]
-default = ["default-id", "unicode-segmentation"]
+default = ["log", "default-id", "unicode-segmentation"]
 log = ["dep:log"]
 default-id = ["dep:rand"]
 unicode-segmentation = ["dep:unicode-segmentation"]
