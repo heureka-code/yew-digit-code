@@ -95,12 +95,8 @@ pub fn inner_code_digit_element<PROFILE: DigitCodeProfile + 'static>(
     let offset_closure_next = focus_offset(id.to_string(), digit_count, FocusOffset::Next);
     let offset_closure_prev = focus_offset(id.to_string(), digit_count, FocusOffset::Previous);
 
-    let focus_next = Callback::from(move |i: usize| {
-        offset_closure_next(i);
-    });
-    let focus_prev = Callback::from(move |i: usize| {
-        offset_closure_prev(i);
-    });
+    let focus_next = Callback::from(move |i: usize| offset_closure_next(i));
+    let focus_prev = Callback::from(move |i: usize| offset_closure_prev(i));
 
     {
         let current_flags = (*flags).clone();

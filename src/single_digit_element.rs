@@ -6,6 +6,7 @@ use yew::events::InputEvent;
 use yew::prelude::*;
 use yew::{html, Html};
 
+use crate::focus_offset::FocusResult;
 use crate::{ArcStrOrChar, DigitCode};
 
 use super::DigitCodeProfile;
@@ -13,7 +14,7 @@ use super::DigitCodeProfile;
 fn handle_input<PROFILE: DigitCodeProfile + 'static>(
     index: usize,
     profile: Arc<PROFILE>,
-    focus_next: Callback<usize>,
+    focus_next: Callback<usize, FocusResult>,
     set_value: Callback<Option<ArcStrOrChar>>,
 ) -> Callback<InputEvent> {
     Callback::from(move |e: InputEvent| {
@@ -52,8 +53,8 @@ fn handle_input<PROFILE: DigitCodeProfile + 'static>(
 fn handle_keydown<PROFILE: DigitCodeProfile + 'static>(
     index: usize,
     profile: Arc<PROFILE>,
-    focus_next: Callback<usize>,
-    focus_prev: Callback<usize>,
+    focus_next: Callback<usize, FocusResult>,
+    focus_prev: Callback<usize, FocusResult>,
     enter_hit: Callback<usize>,
     set_value: Callback<Option<ArcStrOrChar>>,
 ) -> Callback<KeyboardEvent> {
@@ -93,8 +94,8 @@ fn handle_keydown<PROFILE: DigitCodeProfile + 'static>(
 pub(super) struct Props<PROFILE: DigitCodeProfile + 'static> {
     pub index: usize,
     pub whole_code: UseStateHandle<DigitCode<PROFILE>>,
-    pub focus_next: Callback<usize>,
-    pub focus_prev: Callback<usize>,
+    pub focus_next: Callback<usize, FocusResult>,
+    pub focus_prev: Callback<usize, FocusResult>,
     pub enter_hit: Callback<usize>,
     pub disabled: bool,
     pub profile: Arc<PROFILE>,

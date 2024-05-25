@@ -1,11 +1,8 @@
 use wasm_bindgen::JsCast;
 use web_sys::{window, Document, HtmlInputElement};
 
-pub fn document() -> Document {
-    window()
-        .expect("No global window available")
-        .document()
-        .expect("should have a document on window")
+pub fn document() -> Option<Document> {
+    window()?.document()
 }
 
 #[derive(Debug, Clone)]
@@ -15,10 +12,11 @@ pub enum FocusOffset {
 }
 
 #[derive(Debug, Clone)]
-pub enum FocusResult<T> {
+pub enum FocusResult<T = ()> {
     Ok(T),
     TooBig,
     TooLow,
+    NoDocument,
 }
 
 impl FocusOffset {
@@ -53,19 +51,30 @@ pub fn focus_offset(
     move |i: usize| {
         let index = offset.process(i, element_count - 1);
 
+        #[cfg(feature = "log")]
+        log::debug!("Focus offset is called: {offset:?}, index={i} total={element_count}");
+
         let index = match index {
             FocusResult::Ok(index) => index,
             FocusResult::TooBig => return FocusResult::TooBig,
             FocusResult::TooLow => return FocusResult::TooLow,
+            // can't occur at this point
+            FocusResult::NoDocument => return FocusResult::NoDocument,
         };
 
-        let node = document().query_selector(&format!("#{} input[data-index=\"{}\"]", id, index));
-        if let Ok(Some(node)) = node {
-            let node = node.dyn_into::<HtmlInputElement>().ok();
-            if let Some(node) = node {
-                let _ = node.focus();
+        if let Some(document) = document() {
+            let node = document.query_selector(&format!("#{} input[data-index=\"{}\"]", id, index));
+            if let Ok(Some(node)) = node {
+                let node = node.dyn_into::<HtmlInputElement>().ok();
+                if let Some(node) = node {
+                    let _ = node.focus();
+                }
             }
+            FocusResult::Ok(())
+        } else {
+            #[cfg(feature = "log")]
+            log::error!("The focus method was called before a document was ready. Therefore the call will be ignored and this could lead to unexpected behaviour.");
+            FocusResult::NoDocument
         }
-        FocusResult::Ok(())
     }
 }
