@@ -17,6 +17,9 @@ pub struct Props<PROFILE: DigitCodeProfile + 'static> {
     pub flags: Option<UseStateHandle<ControlFlags>>,
     #[prop_or_default]
     pub class: Classes,
+    #[cfg(feature = "yew-hooks")]
+    #[prop_or_default]
+    pub oninit: Callback<AttrValue>,
 }
 
 /// This is the general input component for a code of multiple digits.
@@ -27,6 +30,9 @@ pub struct Props<PROFILE: DigitCodeProfile + 'static> {
 ///   If you want more control you can provide an instance as value of the `profile` attribute.
 /// - The code the user wants to submit will be send to the `submit_code` callback
 /// - If you want to perform additional actions like reset the whole edit you can provide a state with `ControlFlags` to influence the behaviour to `flags`.
+/// - If you want to do something as soon as the document is ready and flags can be processed use the `oninit` attribute to provide a callback
+///
+/// If the `yew-hooks` feature is enabled you can also set a default feature collection when defining the outer state. This will get processed before calling `oninit`.
 ///
 /// # Examples
 ///
@@ -76,6 +82,8 @@ pub fn code_digit_element<PROFILE: DigitCodeProfile + 'static>(
         flags,
         profile,
         class,
+        #[cfg(feature = "yew-hooks")]
+        oninit,
     }: &Props<PROFILE>,
 ) -> Html {
     let default_state_handle_flags = use_state_eq(ControlFlags::default);
@@ -118,5 +126,8 @@ pub fn code_digit_element<PROFILE: DigitCodeProfile + 'static>(
 
     let whole_code_state = use_state(|| DigitCode::new(std::sync::Arc::new(profile.clone())));
 
-    html!(<InnerCodeDigitInput<PROFILE> class={class} id={id} submit_code={submit_code} flags={flags} code={whole_code_state}/>)
+    #[cfg(not(feature = "yew-hooks"))]
+    return html!(<InnerCodeDigitInput<PROFILE> class={class} id={id} submit_code={submit_code} flags={flags} code={whole_code_state}/>);
+    #[cfg(feature = "yew-hooks")]
+    return html!(<InnerCodeDigitInput<PROFILE> class={class} id={id} submit_code={submit_code} flags={flags} code={whole_code_state} oninit={oninit}/>);
 }

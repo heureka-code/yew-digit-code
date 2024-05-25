@@ -16,6 +16,9 @@ pub struct Props<PROFILE: DigitCodeProfile + 'static> {
     pub flags: UseStateHandle<ControlFlags>,
     #[prop_or_default]
     pub class: Classes,
+    #[cfg(feature = "yew-hooks")]
+    #[prop_or_default]
+    pub oninit: Callback<AttrValue>,
 }
 
 fn enter_hit<PROFILE: DigitCodeProfile + 'static>(
@@ -70,8 +73,37 @@ pub fn inner_code_digit_element<PROFILE: DigitCodeProfile + 'static>(
         code,
         flags,
         class,
+        #[cfg(feature = "yew-hooks")]
+        oninit,
     }: &Props<PROFILE>,
 ) -> Html {
+    #[cfg(feature = "yew-hooks")]
+    let is_initialized = {
+        let is_initialized_state = use_state_eq(|| false);
+        use yew_hooks::prelude::*;
+        let cloned_is_initialized = is_initialized_state.clone();
+
+        let id = id.clone();
+        #[cfg(feature = "log")]
+        log::trace!("Try creating interval: id=\"{id}\"");
+
+        let oninit = oninit.clone();
+        use_interval(
+            move || {
+                if crate::focus_offset::document().is_some() {
+                    cloned_is_initialized.set(true);
+                    #[cfg(feature = "log")]
+                    log::debug!("Init complete: id=\"{id}\"");
+                    oninit.emit(id.clone());
+                }
+            },
+            if *is_initialized_state { 0 } else { 100 },
+        );
+        *is_initialized_state
+    };
+    #[cfg(not(feature = "yew-hooks"))]
+    let is_initialized = true;
+
     let id = id.to_string();
 
     use super::focus_offset::{focus_offset, FocusOffset};
@@ -98,7 +130,9 @@ pub fn inner_code_digit_element<PROFILE: DigitCodeProfile + 'static>(
     let focus_next = Callback::from(move |i: usize| offset_closure_next(i));
     let focus_prev = Callback::from(move |i: usize| offset_closure_prev(i));
 
-    {
+    #[cfg(feature = "log")]
+    log::trace!("Try working on flags: {is_initialized}");
+    if is_initialized {
         let current_flags = (*flags).clone();
         let mut builder = current_flags.change();
 
@@ -114,7 +148,10 @@ pub fn inner_code_digit_element<PROFILE: DigitCodeProfile + 'static>(
             builder = builder.unset_clear();
             whole_code_state.set(whole_code_state.as_empty());
         }
-        current_flags.set(builder.apply());
+        let new_flags = builder.apply();
+        if new_flags != *current_flags {
+            current_flags.set(new_flags);
+        }
     }
 
     let enter_hit = enter_hit(

@@ -2,9 +2,7 @@
 name = "yew-digit-code"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
+authors = ["heureka-code"]
 
 [dependencies]
 yew = { version = "0.21.0" }
@@ -17,11 +15,14 @@ rand = { version = "0.8", optional = true }
 unicode-segmentation = { version = "1.11.0", optional = true }
 itertools = { version = "0.13", optional = true }
 serde = { version = "1", optional = true }
+yew-hooks = { version = "0.3", optional = true }
 
 [features]
-default = ["log", "default-id", "unicode-segmentation"]
+default = ["log", "default-id", "unicode-segmentation", "yew-hooks"]
+
 log = ["dep:log"]
 default-id = ["dep:rand"]
 unicode-segmentation = ["dep:unicode-segmentation"]
 itertools = ["dep:itertools"]
 serde = ["dep:serde"]
+yew-hooks = ["dep:yew-hooks"]

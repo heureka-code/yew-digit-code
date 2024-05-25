@@ -14,6 +14,7 @@ If your codes only use ASCII you can disable this feature.
 - `unicode-segmentation` _(default)_: needed for unicode alphabets (changes method signatures)
 - `itertools`: no interface changes. Some implementations differ (joining strings and chars). Itertools is more efficient for sure
 - `serde`: not needed but adds some implementations
+- `yew-hooks` _(default)_: activates `yew-hooks` to provide a callback that's called after initialization of the component
 
 # Style
 An example SCSS style sheet is displayed below. It's best for digit codes with a length that's a multiple of 3

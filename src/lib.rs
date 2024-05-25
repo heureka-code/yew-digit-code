@@ -14,6 +14,7 @@
 //! - `unicode-segmentation`: needed for unicode alphabets (changes method signatures)
 //! - `itertools`: no interface changes. Some implementations differ (joining strings and chars). Itertools is more efficient for sure
 //! - `serde`: not needed but adds some implementations
+//! - `yew-hooks` _(default)_: activates `yew-hooks` to provide a callback that's called after initialization of the component
 
 mod code_element;
 mod control_flags;
