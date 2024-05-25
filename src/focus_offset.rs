@@ -69,6 +69,9 @@ pub fn focus_offset(
                 if let Some(node) = node {
                     let _ = node.focus();
                 }
+            } else {
+                #[cfg(feature = "log")]
+                log::error!("An error occured while focussing a node: {node:?}");
             }
             FocusResult::Ok(())
         } else {

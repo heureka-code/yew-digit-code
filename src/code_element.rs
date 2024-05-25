@@ -91,15 +91,26 @@ pub fn code_digit_element<PROFILE: DigitCodeProfile + 'static>(
             } else {
                 let rng = rand::thread_rng();
 
-                rng.sample_iter(&Alphanumeric)
+                let random_alphanumeric: String = rng
+                    .sample_iter(&Alphanumeric)
                     .take(50)
                     .map(char::from)
-                    .collect()
+                    .collect();
+                // must start with a letter
+                format!("digit-code-edit-{random_alphanumeric}")
             }
         });
         (*id_state).clone()
     };
+
     let id = id.to_string();
+    let id = if id.starts_with(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']) {
+        id
+    } else {
+        #[cfg(feature = "log")]
+        log::warn!("Your choosen id isn't valid. It needs to start with a letter");
+        format!("d-{id}")
+    };
 
     let profile = profile.clone().unwrap_or_default();
     let flags = flags.clone();
