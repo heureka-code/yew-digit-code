@@ -115,7 +115,7 @@ pub(super) fn code_single_digit_element<T: DigitCodeProfile + 'static>(
         set_value,
     }: &Props<T>,
 ) -> Html {
-    let index = index.clone();
+    let index = *index;
     let whole_code = whole_code.clone();
     let get_value = || (*whole_code).get(index).clone();
 
@@ -142,6 +142,6 @@ pub(super) fn code_single_digit_element<T: DigitCodeProfile + 'static>(
 
     let value = get_value().map(|s| s.to_string()).unwrap_or_default();
     html!(
-        <input type={"text"} maxlength={1} inputmode={input_mode} disabled={disabled.clone()} value={value} oninput={handle_input} onkeydown={handle_keydown} data-index={index.to_string()}/>
+        <input type={"text"} maxlength={1} inputmode={input_mode} disabled={*disabled} value={value} oninput={handle_input} onkeydown={handle_keydown} data-index={index.to_string()}/>
     )
 }

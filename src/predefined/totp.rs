@@ -8,7 +8,7 @@ pub struct TotpCodeProfile<const LENGTH: usize = 6>;
 
 impl<const LENGTH: usize> TotpCodeProfile<LENGTH> {
     pub fn new() -> Self {
-        Self::default()
+        Self {}
     }
 }
 

@@ -11,7 +11,7 @@ pub enum FocusOffset {
     Previous,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum FocusResult<T = ()> {
     Ok(T),
     TooBig,
@@ -72,6 +72,7 @@ pub fn focus_offset(
             } else {
                 #[cfg(feature = "log")]
                 log::error!("An error occured while focussing a node: {node:?}");
+                return FocusResult::NoDocument;
             }
             FocusResult::Ok(())
         } else {

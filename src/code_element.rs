@@ -78,7 +78,7 @@ pub fn code_digit_element<PROFILE: DigitCodeProfile + 'static>(
         class,
     }: &Props<PROFILE>,
 ) -> Html {
-    let default_state_handle_flags = use_state_eq(|| ControlFlags::default());
+    let default_state_handle_flags = use_state_eq(ControlFlags::default);
     let flags = flags.clone().unwrap_or(default_state_handle_flags);
 
     #[cfg(feature = "default-id")]

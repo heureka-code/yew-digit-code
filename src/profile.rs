@@ -34,19 +34,20 @@ use char_and_ref::CharOrCharRef;
 ///
 /// IF YOUR ALPHABET CONTAINS UNICODE CODEPOINTS WHICH ARE LONGER THAN ONE SCALAR YOU HAVE TO ENABLE THE
 /// `unicode-segmentation` feature
+#[allow(clippy::len_without_is_empty)]
 pub trait DigitCodeProfile: PartialEq + Clone + Default + Debug {
     /// This describes the amount of digits
     fn len(&self) -> usize;
     /// This needs to check if a given char matches the alphabet. Length is checked in other functions.
     /// Char will have length 1
-    fn char_matches_alphabet_impl<'a>(&self, char: RefStrOrChar<'a>) -> bool;
+    fn char_matches_alphabet_impl(&self, char: RefStrOrChar<'_>) -> bool;
 
     /// Checks if a provided text represents a valid character for a single digit
     ///
     /// if unicode-segmentation feature is disabled length will be checked with chars which could
     /// result in wrong result unless you only use unicode chars with length of one char.
     #[cfg(feature = "unicode-segmentation")]
-    fn is_valid_char<'a>(&self, chr: RefStrOrChar<'a>) -> bool {
+    fn is_valid_char(&self, chr: RefStrOrChar<'_>) -> bool {
         chr.graphemes(true).count() == 1 && self.char_matches_alphabet_impl(chr)
     }
     #[cfg(not(feature = "unicode-segmentation"))]
@@ -72,7 +73,7 @@ pub trait DigitCodeProfile: PartialEq + Clone + Default + Debug {
                 return false;
             }
         }
-        return len == self.len();
+        len == self.len()
     }
     /// Checks if a provided text represents a valid digit code of this profile
     ///
@@ -91,7 +92,7 @@ pub trait DigitCodeProfile: PartialEq + Clone + Default + Debug {
     /// This checks if the provided code is valid.
     /// The user is responsible for splitting a text into chars/str
     fn valid_char_code(&self, chars: &[RefStrOrChar<'_>]) -> Option<String> {
-        if self.is_char_code_valid(chars.into_iter().cloned()) {
+        if self.is_char_code_valid(chars.iter().cloned()) {
             #[cfg(feature = "itertools")]
             let res = chars.into_iter().join("");
             #[cfg(not(feature = "itertools"))]
