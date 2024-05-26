@@ -1,9 +1,13 @@
 //! This crate provides a `yew` component for digit based codes like TOTP where the user gets
 //! a nice looking collection of LEN edits – each with length one – to enter a code with a fixed alphabet.
 //!
-//! Documentation: <https://heureka-code.github.io/yew-digit-code/>
+//! ### Example
 //!
-//! A runnable example: <https://github.com/heureka-code/yew-digit-code-example>
+//! A runnable example: <https://heureka-code.github.io/yew-digit-code-example/>
+//!
+//! The example repository: <https://github.com/heureka-code/yew-digit-code-example>
+//!
+//! ---
 //!
 //! This crate uses the `unicode-segmentation` crate as a dependency (behind a feature flag).
 //! The signatures of this crate's methods depend highly on this flag so be aware of that.

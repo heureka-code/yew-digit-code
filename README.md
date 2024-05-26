@@ -3,7 +3,13 @@ a nice looking collection of LEN edits with length one to enter a code with a fi
 
 Documentation: https://heureka-code.github.io/yew-digit-code/
 
-A runnable example: https://github.com/heureka-code/yew-digit-code-example
+### Example
+
+A runnable example: https://heureka-code.github.io/yew-digit-code-example/
+
+The example repository: https://github.com/heureka-code/yew-digit-code-example
+
+---
 
 This crate uses the `unicode-segmentation` crate as a dependency (behind a feature flag).
 The signatures of this crate's methods depend highly on this flag so be aware of that.
